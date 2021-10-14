@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('../partials/header') -%>
+</head>
+<body class="flex-center">
+    <h1>Log in</h1>
+    <div>
+        <label for="email">email</label><br>
+        <input type="text" name="email" id="emailLogin">
+    </div><br><br>
+    <div>
+        <label for="pass">password</label><br>
+        <input type="password" id="passwordLogin" name="pass">
+    </div><br><br>
+    <button id="loginBtn">log in</button>
+</body>
+<script>
+    $("#loginBtn").click(function (e) { 
+        e.preventDefault();
+        fetch('http://localhost:3000/login',{
+            method:'POST',
+            headers:{
+                'Content-type':'application/json'
+            },
+            body:JSON.stringify({email:$("#emailLogin").val(), password: $("#passwordLogin").val()})
+
+        })
+        .then(res => res.json())
+        .then(data =>{
+            if(data.message ==="yes"){
+                setCookie("email",$("#emailLogin").val(),30);
+                setCookie("id",data.id);
+                window.location.replace(`/home:${data.id}`)
+            }
+            else{
+                window.alert("invalid credentials");
+            }
+        })
+    });
+</script>
+</html>

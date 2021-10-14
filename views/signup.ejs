@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('../partials/header') -%>
+</head>
+<body class="flex-center">
+    <h1>Sign up</h1>
+    <div>
+        <label for="name">name</label><br>
+        <input type="text" name="name" id="nameSignup">
+    </div><br><br>
+    <div>
+        <label for="email">email</label><br>
+        <input type="text" name="email" id="emailSignup">
+    </div>
+    <br><br>
+    <div>
+        <label for="pass">password</label><br>
+        <input type="password" id="passwordSignup" name="pass">
+    </div><br><br>
+    <button id="signupBtn">sign up</button>
+</body>
+<script>
+    $("#signupBtn").click(function (e) { 
+        e.preventDefault();
+        fetch('http://localhost:3000/signup',{
+       method:'POST',
+       headers:{'Content-type':'application/json'},
+       body:JSON.stringify({name:$("#nameSignup").val(),email:$("#emailSignup").val(),password:$("#passwordSignup").val()})
+   })
+   .then(response => response.json())
+   .then(data =>{
+       if(data.message==="successful"){
+            setCookie("email",$("#emailSignup").val(),30);
+           window.location.replace(`/home:${$("#emailSignup").val()}`)
+       }
+       else{
+        window.alert("User already exists / there was an error");
+       }
+   });
+});
+</script>
+</html>

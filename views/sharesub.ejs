@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .detsInput{
+            display: none;
+        }
+    </style>
+    <%- include('../partials/header') -%>
+</head>
+
+<body class="flex-center" style="justify-content: flex-start;">
+    <div class="nav">
+
+        <a href="" id="home"><i>back</i></a>
+        <a href="/">log out</a>
+        
+    </div>
+    <div style="margin-top: 4rem;width:80%;min-width:310px;">
+        <div id="netflixDet">
+            <h1>Enter Netflix subscription details</h1>
+            <label for="">email</label><br>
+            <input type="text" id="netflixShareEmail"><br><br>
+            <label for="">password</label><br>
+            <input type="text" id="netflixSharePassword"><br><br>
+            <button id="shareNetflix">submit</button>
+        </div>
+    </div>
+</body>
+<script>
+    $("#home").click(function (e) { 
+            e.preventDefault();
+            window.location.href=`/home:${getCookie("id")}`;
+    });
+    const shareDets = (data) =>{
+
+        fetch("http://localhost:3000/shareSub",{
+            method:'POST',
+            headers:{
+                'Content-type':'application/json'
+            },
+            body:JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data=>{
+            if(data){
+                console.log(data.message);
+                fetch("http://localhost:3000/addParticipant",{
+                    method:"POST",
+                    headers:{
+                        "Content-type":"application/json"
+                    },
+                    body:JSON.stringify({host:getCookie("email"),part:getCookie("id")})
+                })
+            }
+        })
+
+    }
+
+
+  
+
+    $("#shareNetflix").click(function (e) { 
+        e.preventDefault();
+        var temp = {host:getCookie("email"),service:"Netflix",email: $("#netflixShareEmail").val(),password: $("#netflixSharePassword").val(),slots: $("#netflixScreenLimit").val()}
+        shareDets(temp);
+        $("#netflixShareEmail").val("");
+        $("#netflixSharePassword").val("");
+        $("#netflixScreenLimit").val("");
+        window.alert("Details shared");
+    });
+
+
+</script>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('../partials/header') -%>
+    <style>
+        .disabled:hover{
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="flex-center" style="justify-content: flex-start;">
+    <div  style="margin-top: 4rem;width:80%;min-width:310px;height: 100%;">
+       <div style="display: flex;justify-content: space-between;align-items: center;">
+            <div>
+                <a href="/shareSubscription"  style="text-align: center;margin: 2rem;margin-left: 0;">Share subscription</a>
+                <%if(host){%>
+                    
+                    <a href="/addPartic"  style="text-align: center;margin: 2rem;margin-left: 0;">Add participant</a>
+                    <a href=""  style="text-align: center;margin: 2rem;margin-left: 0;" id="manSub">Manage subscription</a>
+
+                <%}%>
+                
+                my id : <%= id %>
+            </div>
+            <div>
+                <a href="/">log out</a>
+            </div>
+            
+       </div> 
+       <hr>
+       <div class="cardCont" >
+                        <% if(data){if(data.service==="Netflix"){ %>
+                            
+                            <a href="https://www.netflix.com/in/login" class="gotonet" ><h2 style="font-weight: 500;color: white;">Go to Netflix</h2></a>
+                        
+                <% }else{ %>
+                    <h1 style="font-weight:500;color: crimson;">no subscriptions</h1>
+                <% } }%>
+                
+       </div >
+    </div>
+    <script>
+        $("#manSub").click(function (e) { 
+            e.preventDefault();
+            window.location.replace(`/manageSubscriptions:${getCookie("id")}`)
+        });
+    </script>
+</body>
+</html>
+
+<!-- <img src="/images/netflix-logo-png-2582.png" alt=""> -->
