@@ -90,7 +90,7 @@ app.post('/mysubs',(req,res)=>{
     let dataToSend={};
     let email = req.body.email;
     console.log(email)
-    mysub.findOne({usermail:"aditya.kocherlakota@gmail.com"})
+    mysub.findOne({usermail:email})
     .then(userSub =>{
         console.log(userSub);
         if(userSub){
